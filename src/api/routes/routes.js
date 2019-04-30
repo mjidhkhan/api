@@ -28,39 +28,22 @@ app.use(bodyParser.urlencoded({
 // ***********************************************************************
 // Get all Courses
 app.get('/', (req, res) => {
-    var sql = `SELECT * FROM course_details`
-    db.connect.query(sql, function(err, results) {
-        if (err) {
-            res.statusCode = 500;
-            res.json({ errors: [res.statusCode + ': Could not get data'] });
-        } else if (results.length === 0) {
-            // We are able to set the HTTP status code on the res object
-            res.statusCode = 404;
-            res.json({ errors: ['Course not found'] });
-        }
+    data.getCourses(function(data) {
+        res.json(data)
     });
 });
 
 //Get course by ID
 app.get('/course/:id', (req, res) => {
     var sql = `SELECT * FROM course_details WHERE course_id = ${req.params.id}`
-    db.connect.query(sql, function(err, results) {
-        if (err) {
-            res.statusCode = 500;
-            res.json({ errors: [res.statusCode + ': Could not get data'] });
-        } else
-        // No results returned mean the object is not found
-        if (results.length === 0) {
-            // We are able to set the HTTP status code on the res object
-            res.statusCode = 404;
-            res.json({ errors: ['Course not found'] });
-        } else {
-            res.json(results)
-        }
+    data.getCourseByID(req.params.id, function(data) {
+        res.json(data)
     });
+
 });
 
 // ***********************************************************************
+
 
 //Get Starters
 app.get('/starters', (req, res) => {
