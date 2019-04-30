@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import db from '../db/database';
+import db from '../config/config';
 
 /**
  * @description { Get All meal Courses}
