@@ -14,7 +14,27 @@ var getCustomers = function(data) {
             return data({ errors: [statusCode + ': Could not get data'] });
         } else if (rows.length === 0) {
             statusCode = 404;
-            return data({ errors: [statusCode + ': Course not found'] });
+            return data({ errors: [statusCode + `: Customers dtat not found.`] });
+        } else {
+            return data(rows);
+        }
+
+    });
+};
+/**
+ * @description { Get All meal Courses}
+ * @param {retunr function} data 
+ */
+var customerByID = function(id, data) {
+    var statusCode = 0
+    var sql = `SELECT * FROM users WHERE status = 3 AND id= ${id}`
+    db.connect.query(sql, [], (err, rows) => {
+        if (err) {
+            statusCode = 500;
+            return data({ errors: [statusCode + ': Could not get data'] });
+        } else if (rows.length === 0) {
+            statusCode = 404;
+            return data({ errors: [statusCode + `: Customer not found with ID : ${id}`] });
         } else {
             return data(rows);
         }
@@ -27,7 +47,7 @@ var getCustomers = function(data) {
  * @param { ID Int} id 
  * @param {function } data 
  */
-var customerByID = function(id, data) {
+var customerByIDWithOrder = function(id, data) {
     var statusCode = 0
     var sql = `SELECT DISTINCT users.fullname,users.email, 
     orders.id, orders.booking_date,
@@ -52,7 +72,7 @@ var customerByID = function(id, data) {
             return data({ errors: [statusCode + ': Could not get data'] });
         } else if (rows.length === 0) {
             statusCode = 404;
-            return data({ errors: [statusCode + ': Course not found for ID:' + id] });
+            return data({ errors: [statusCode + ': Customer Order not found for ID:' + id] });
         } else {
             return data(rows);
         }
@@ -62,5 +82,6 @@ var customerByID = function(id, data) {
 
 module.exports = {
     getCustomers: getCustomers,
-    customerByID: customerByID
+    customerByID: customerByID,
+    customerByIDWithOrder: customerByIDWithOrder
 };

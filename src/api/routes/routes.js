@@ -25,8 +25,12 @@ module.exports = (app) => {
     // ***********************************************************************
 
     //Get Main Courses
-    app.get('/main', (req, res) => {
+    app.get('/main_course', (req, res) => {
         include.main_courses.mainCourses(function(data) { res.json(data) });
+    });
+    //Get Main Courses
+    app.get('/main_course/:id', (req, res) => {
+        include.main_courses.mainCoursesByID(req.params.id, function(data) { res.json(data) });
     });
 
 
@@ -86,7 +90,7 @@ module.exports = (app) => {
         include.order.getOrders(function(data) { res.json(data) });
     })
 
-
+    // ***********************************************************************
     // Get  OrderByID
 
     app.get('/orders/:id', (req, res) => {
@@ -94,9 +98,15 @@ module.exports = (app) => {
     })
 
 
-
-    app.get('/customer/orders/:id', (req, res) => {
+    // ***********************************************************************
+    app.get('/customer/', (req, res) => {
+        include.customer.getCustomers(function(data) { res.json(data) });
+    })
+    app.get('/customer/:id', (req, res) => {
         include.customer.customerByID(req.params.id, function(data) { res.json(data) });
+    })
+    app.get('/customer/orders/:id', (req, res) => {
+        include.customer.customerByIDWithOrder(req.params.id, function(data) { res.json(data) });
     })
 
 }
