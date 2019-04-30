@@ -5,24 +5,9 @@ import db from '../db/database';
  * @description { Get All meal Courses}
  * @param {retunr function} data 
  */
-var refreshments = function(data) {
+var getOrders = function(data) {
     var statusCode = 0
-    var sql = `SELECT course_details.course_id, course_details.course_name, 
-    course_details.course_prep_date,
-    course_details.course_prep_time,
-    course_details.course_notes,
-    course_details.course_instructions,
-    course_details.course_image, 
-    meal_type.meal_type,
-    course_type.course_type
-    FROM course_details 
-    INNER JOIN meal_course
-    ON meal_course.id =course_details.course_id
-    INNER JOIN course_type
-    ON course_type.id = meal_course.course_type
-    INNER JOIN meal_type
-    ON meal_type.id = meal_course.meal_type
-    WHERE meal_course.meal_type = 4`
+    var sql = `SELECT * FROM orders`
     db.connect.query(sql, [], (err, rows) => {
         if (err) {
             statusCode = 500;
@@ -42,9 +27,25 @@ var refreshments = function(data) {
  * @param { ID Int} id 
  * @param {function } data 
  */
-var refreshmentsByID = function(id, data) {
+var orderByID = function(id, data) {
     var statusCode = 0
-    var sql = `SELECT * FROM course_details WHERE course_id = ${id}`
+    var sql = `SELECT DISTINCT users.fullname,users.email, 
+    orders.id, orders.booking_date,
+    order_details.course_id,
+    order_details.course_name, 
+    order_details.servings, 
+    order_details.order_status,
+    meal_type.meal_type, course_type.course_type 
+    FROM users
+    INNER JOIN orders 
+    ON orders.customer_id = users.id
+    INNER JOIN order_details 
+    ON order_details.order_id = orders.id
+    INNER JOIN meal_type 
+    ON order_details.meal_type = meal_type.id
+    INNER JOIN course_type 
+    ON order_details.course_type = course_type.id
+    WHERE orders.id= ${id} ORDER BY  order_details.course_id `
     db.connect.query(sql, [], (err, rows) => {
         if (err) {
             statusCode = 500;
@@ -60,6 +61,6 @@ var refreshmentsByID = function(id, data) {
 };
 
 module.exports = {
-    refreshments: refreshments,
-    refreshmentsByID: refreshmentsByID
+    getOrders: getOrders,
+    orderByID: orderByID
 };
