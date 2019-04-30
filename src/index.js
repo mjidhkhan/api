@@ -135,6 +135,156 @@ Where meal_course.course_type = 2`
 
 
 
+// ***********************************************************************
+
+//Get vegan Courses
+app.get('/vegan', (req, res) => {
+    var sql = `SELECT course_details.course_id, course_details.course_name, 
+    course_details.course_prep_date,
+    course_details.course_prep_time,
+    course_details.course_notes,
+    course_details.course_instructions,
+    course_details.course_image, 
+    meal_type.meal_type,
+    course_type.course_type
+FROM course_details 
+INNER JOIN meal_course
+ON meal_course.id =course_details.course_id
+INNER JOIN course_type
+ON course_type.id = meal_course.course_type
+INNER JOIN meal_type
+ON meal_type.id = meal_course.meal_type
+WHERE meal_course.meal_type = 1`
+    db.connect.query(sql, function(err, results) {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ errors: [res.statusCode + ': Could not get data'] });
+        } else
+        // No results returned mean the object is not found
+        if (results.length === 0) {
+            // We are able to set the HTTP status code on the res object
+            res.statusCode = 404;
+            res.json({ errors: ['Course not found'] });
+        } else {
+            res.json(results)
+        }
+    });
+});
+
+
+
+// ***********************************************************************
+
+//Get non-vegan Courses
+app.get('/non-vegan', (req, res) => {
+    var sql = `SELECT course_details.course_id, course_details.course_name, 
+    course_details.course_prep_date,
+    course_details.course_prep_time,
+    course_details.course_notes,
+    course_details.course_instructions,
+    course_details.course_image, 
+    meal_type.meal_type,
+    course_type.course_type
+FROM course_details 
+INNER JOIN meal_course
+ON meal_course.id =course_details.course_id
+INNER JOIN course_type
+ON course_type.id = meal_course.course_type
+INNER JOIN meal_type
+ON meal_type.id = meal_course.meal_type
+WHERE meal_course.meal_type = 2`
+    db.connect.query(sql, function(err, results) {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ errors: [res.statusCode + ': Could not get data'] });
+        } else
+        // No results returned mean the object is not found
+        if (results.length === 0) {
+            // We are able to set the HTTP status code on the res object
+            res.statusCode = 404;
+            res.json({ errors: ['Course not found'] });
+        } else {
+            res.json(results)
+        }
+    });
+});
+
+
+// ***********************************************************************
+
+//Get Desserte Courses
+app.get('/desserts', (req, res) => {
+    var sql = `SELECT course_details.course_id, course_details.course_name, 
+    course_details.course_prep_date,
+    course_details.course_prep_time,
+    course_details.course_notes,
+    course_details.course_instructions,
+    course_details.course_image, 
+    meal_type.meal_type,
+    course_type.course_type
+FROM course_details 
+INNER JOIN meal_course
+ON meal_course.id =course_details.course_id
+INNER JOIN course_type
+ON course_type.id = meal_course.course_type
+INNER JOIN meal_type
+ON meal_type.id = meal_course.meal_type
+WHERE meal_course.meal_type = 3`
+    db.connect.query(sql, function(err, results) {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ errors: [res.statusCode + ': Could not get data'] });
+        } else
+        // No results returned mean the object is not found
+        if (results.length === 0) {
+            // We are able to set the HTTP status code on the res object
+            res.statusCode = 404;
+            res.json({ errors: ['Course not found'] });
+        } else {
+            res.json(results)
+        }
+    });
+});
+
+
+// ***********************************************************************
+
+//Get Refreshments Courses
+app.get('/refreshments', (req, res) => {
+    var sql = `SELECT course_details.course_id, course_details.course_name, 
+    course_details.course_prep_date,
+    course_details.course_prep_time,
+    course_details.course_notes,
+    course_details.course_instructions,
+    course_details.course_image, 
+    meal_type.meal_type,
+    course_type.course_type
+FROM course_details 
+INNER JOIN meal_course
+ON meal_course.id =course_details.course_id
+INNER JOIN course_type
+ON course_type.id = meal_course.course_type
+INNER JOIN meal_type
+ON meal_type.id = meal_course.meal_type
+WHERE meal_course.meal_type = 4`
+    db.connect.query(sql, function(err, results) {
+        if (err) {
+            res.statusCode = 500;
+            res.json({ errors: [res.statusCode + ': Could not get data'] });
+        } else
+        // No results returned mean the object is not found
+        if (results.length === 0) {
+            // We are able to set the HTTP status code on the res object
+            res.statusCode = 404;
+            res.json({ errors: ['Course not found'] });
+        } else {
+            res.json(results)
+        }
+    });
+});
+
+
+
 
 // ***********************************************************************
 // Get All Stock
